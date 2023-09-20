@@ -21,6 +21,12 @@ def read_mnist():
     cache['x_test'] = mnist_data.test_data
     cache['y_test'] = mnist_data.test_labels
 
+    if torch.cuda.is_available():
+        cache['x_train'] = cache['x_train'].cuda()
+        cache['x_test'] = cache['x_train'].cuda()
+        cache['y_train'] = cache['x_train'].cuda()
+        cache['y_train'] = cache['x_train'].cuda()
+
     return cache
 
 

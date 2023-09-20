@@ -24,6 +24,10 @@ def create_model(input_size, hidden_size, output_size, learning_rate=0.05):
     cost = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
+    if torch.cuda.is_available():
+        model = model.cuda()
+        cost = cost.cuda()
+
     cache['model'] = model
     cache['cost'] = cost
     cache['optim'] = optimizer
