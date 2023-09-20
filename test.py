@@ -17,8 +17,8 @@ def test(hidden_size, output_size, learning_rate=0.05, epochs=200, batch_size=50
     model = model_cache['model']
 
     batch_training(model_cache, batch_cache, epochs=epochs, define_batch_num=define_batch_num)
-    print(testing(model, x_test_squeezed, y_test))
+    testing(model, x_test_squeezed, y_test)
 
 
 if __name__ == '__main__':
-    test(128, 10, define_batch_num=1)
+    test(128, 10, define_batch_num=10)

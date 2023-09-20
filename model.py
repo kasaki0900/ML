@@ -68,7 +68,7 @@ def testing(model, x, y):
         exact = torch.sum(torch.eq(pred, y)).item()
         exact_rate = exact / test_size
 
-        return exact_rate
+        print('accuracy rate: ', round(exact_rate, 4))
 
 
 def recognizing(model, x):
