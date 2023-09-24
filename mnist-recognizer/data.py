@@ -7,19 +7,23 @@ from torchvision import datasets, transforms
 
 def read_mnist():
     cache = {}
-    mnist_data = datasets.MNIST(
+    train_data = datasets.MNIST(
         root='',
         train=True,
         transform=transforms.ToTensor(),
         download=False
     )
-    print(mnist_data)
+    test_data = datasets.MNIST(
+        root='',
+        train=False,
+        transform=transforms.ToTensor(),
+        download=False
+    )
+    cache['x_train'] = train_data.data
+    cache['y_train'] = train_data.targets
 
-    cache['x_train'] = mnist_data.train_data
-    cache['y_train'] = mnist_data.train_labels
-
-    cache['x_test'] = mnist_data.test_data
-    cache['y_test'] = mnist_data.test_labels
+    cache['x_test'] = test_data.data
+    cache['y_test'] = test_data.targets
 
     if torch.cuda.is_available():
         cache['x_train'] = cache['x_train'].cuda()
