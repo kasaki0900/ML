@@ -1,24 +1,32 @@
-from model import *
+import os
+from models import model
+from data_processing import data
+import training
 
 
-def test(hidden_size, output_size, learning_rate=0.05, epochs=200, batch_size=5000, define_batch_num=0):
-    data_cache = read_mnist()
-    x_train = data_cache['x_train']
-    y_train = data_cache['y_train']
-    x_test = data_cache['x_test']
-    y_test = data_cache['y_test']
+def main():
+    data_cache = data.read_mnist(32)
+    md = model.MnistRecognizerCNN(1, 64, 256)
+    trainer = training.Trainer(md, learning_rate=0.2)
 
-    x_train_squeezed = reshape(x_train)
-    x_test_squeezed = reshape(x_test)
-    y_train_onehot = one_hot(y_train)
+    print(trainer.test(data_cache.test_data))
+    print(list(md.parameters())[0][0, 0, 0, 0].item())
 
-    batch_cache = batch_partition(x_train_squeezed, y_train_onehot, batch_size=batch_size)
-    model_cache = create_model(x_train_squeezed.shape[1], hidden_size, output_size, learning_rate=learning_rate)
-    model = model_cache['model']
-
-    batch_training(model_cache, batch_cache, epochs=epochs, define_batch_num=define_batch_num)
-    testing(model, x_test_squeezed, y_test)
+    trainer.train(data_cache.train_data_loader, n_batch=16, epochs=160)
+    print(trainer.test(data_cache.test_data))
+    print(list(md.parameters())[0][0, 0, 0, 0].item())
 
 
-if __name__ == '__main__':
-    test(128, 10, define_batch_num=10)
+if __name__ == "__main__":
+    main()
+
+# path = "model_para_pkl"
+# i = 1
+# file_path = os.path.join(path, "model"+str(i))
+# print(file_path)
+#
+# if not os.path.exists(file_path):
+#     with open(file_path, 'w') as f:
+#         f.write("pkl file here")
+# with open(os.path.join(path, file_name), w):
+
